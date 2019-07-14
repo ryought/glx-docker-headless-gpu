@@ -1,0 +1,14 @@
+# WIP
+version: '3'
+services:
+  x11gl:
+    build: .
+    runtime: nvidia
+    command: /bin/bash
+    ports:
+      - "8080:8080" # aaa
+    environment:
+      - BUSID: PCI:0:4:0
+      - SCREEN_RESOLUTION: 1280x1024
+      - VNC_PASSWORD: ryought
+    privileged: true

@@ -82,6 +82,8 @@ ssh -i "$KEYFILE" -L 5900:localhost:5900 $USERNAME@$GCP_PUBLIC_IP -N &
 
 でトンネルを作り、VNCクライアント(macならFinder)で`vnc://localhost:5900`に接続する。
 
+![img](screenshot.png)
+
 リモートのdocker内でレンダリングした結果が手元のmacbookで確認できる環境がこれで整った。
 
 ## 何をしているか

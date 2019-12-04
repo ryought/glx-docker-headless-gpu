@@ -12,3 +12,5 @@ services:
       - SCREEN_RESOLUTION: 1280x1024
       - VNC_PASSWORD: ryought
     privileged: true
+  autoware:
+    image: autoware/autoware:latest-kinetic

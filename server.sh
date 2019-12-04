@@ -1,8 +1,12 @@
-nvidia-docker build -t x11-GL-docker .
-docker run --runtime=nvidia --privileged -it --rm \
-  -p 5900:5900 \  # or --net=host
-  -e BUSID=PCI:0:4:0 \
-  -e SCREEN_RESOLUTION=1280x1024 \
-  -e VNC_PASSWORD=passpass \
-  -v $HOME/lgsvlsimulator-linux64-2019.05:/lg \
-  --name x11-GL-docker x11-GL-docker
+docker build -t sim .
+docker run --privileged -it --rm --gpus all \
+  --device=/dev/snd:/dev/snd \
+  -v $HOME/lg/lgsvlsimulator-linux64-2019.10:/lg \
+  -v $HOME/container-unity3d:/root/.config/unity3d \
+  -p 8081:8081 \
+  -p 8082:8082 \
+  --name sim sim
+
+
+# 8081: noVNC port
+# 8082: simulator

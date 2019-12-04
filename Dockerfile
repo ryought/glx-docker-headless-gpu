@@ -18,8 +18,13 @@ RUN dpkg --add-architecture i386 && \
         curl \
         wget \
         vim \
+        zip \
+        unzip \
+        git \
+        python \
         kmod \
         libc6:i386 \
+        pkg-config \
         libelf-dev && \
     rm -rf /var/lib/apt/lists/*
 
@@ -34,6 +39,7 @@ RUN apt-get update && apt-get install -y \
 # Driver version must be equal to host's driver
 # Install the userspace components and copy the kernel module sources.
 ENV DRIVER_VERSION=410.104
+# ENV DRIVER_VERSION=440.33.01
 RUN cd /tmp && \
     curl -fSsl -O https://us.download.nvidia.com/tesla/$DRIVER_VERSION/NVIDIA-Linux-x86_64-$DRIVER_VERSION.run && \
     sh NVIDIA-Linux-x86_64-$DRIVER_VERSION.run -x && \
@@ -47,13 +53,16 @@ RUN cd /tmp && \
                        --no-backup \
                        --no-check-for-alternate-installs \
                        --no-libglx-indirect \
-                       --no-install-libglvnd \
                        --no-glvnd-egl-client \
-                       --no-glvnd-glx-client && \
+                       --no-glvnd-glx-client \
+                       --no-install-libglvnd && \
     mkdir -p /usr/src/nvidia-$DRIVER_VERSION && \
     mv LICENSE mkprecompiled kernel /usr/src/nvidia-$DRIVER_VERSION && \
     sed '9,${/^\(kernel\|LICENSE\)/!d}' .manifest > /usr/src/nvidia-$DRIVER_VERSION/.manifest && \
     rm -rf /tmp/*
+                       # --no-glvnd-egl-client \
+                       # --no-glvnd-glx-client \
+                       # this option cannot be used on driver 440.33.01
 
 # (2) Configurate Xorg
 # (2-1) Install some necessary softwares
@@ -64,16 +73,33 @@ RUN cd /tmp && \
 # x11-apps: xeyes can be used to make sure that X11 server is running.
 #
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        pkg-config \
         mesa-utils \
         x11vnc \
         x11-apps && \
     rm -rf /var/lib/apt/lists/*
 
 # (2-2) Optional vulkan support
+# vulkan-utils includes vulkan-smoketest, benchmark software of vulkan API
 RUN apt-get update && apt-get install -y --no-install-recommends \
         libvulkan1 vulkan-utils && \
     rm -rf /var/lib/apt/lists/*
+
+# for test
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        firefox openbox && \
+    rm -rf /var/lib/apt/lists/*
+
+# sound driver and GTK library
+# ALSA系のエラーがでる時は、pulseaudioをインストールして
+# X起動後にpulseaudio --start でdaemonを開始させる。
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      alsa pulseaudio libgtk2.0-0 && \
+    rm -rf /var/lib/apt/lists/*
+
+# novnc
+RUN wget https://github.com/novnc/noVNC/archive/v1.1.0.zip && \
+  unzip -q v1.1.0.zip && \
+  rm -rf v1.1.0.zip
 
 # (2-3) Copy xorg.conf
 # use existing one

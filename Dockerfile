@@ -38,10 +38,9 @@ RUN apt-get update && apt-get install -y \
 # Same command as nvidia/driver, except --x-{prefix,module-path,library-path,sysconfig-path} are omitted in order to make use default path and enable X drivers.
 # Driver version must be equal to host's driver
 # Install the userspace components and copy the kernel module sources.
-ENV DRIVER_VERSION=410.104
-# ENV DRIVER_VERSION=440.33.01
+ENV DRIVER_VERSION=418.87.01
 RUN cd /tmp && \
-    curl -fSsl -O https://us.download.nvidia.com/tesla/$DRIVER_VERSION/NVIDIA-Linux-x86_64-$DRIVER_VERSION.run && \
+    curl -fSsl -O https://us.download.nvidia.com/tesla/418.87/NVIDIA-Linux-x86_64-418.87.01.run && \
     sh NVIDIA-Linux-x86_64-$DRIVER_VERSION.run -x && \
     cd NVIDIA-Linux-x86_64-$DRIVER_VERSION* && \
     ./nvidia-installer --silent \
@@ -60,9 +59,9 @@ RUN cd /tmp && \
     mv LICENSE mkprecompiled kernel /usr/src/nvidia-$DRIVER_VERSION && \
     sed '9,${/^\(kernel\|LICENSE\)/!d}' .manifest > /usr/src/nvidia-$DRIVER_VERSION/.manifest && \
     rm -rf /tmp/*
+                       # this option cannot be used on newer driver
                        # --no-glvnd-egl-client \
                        # --no-glvnd-glx-client \
-                       # this option cannot be used on driver 440.33.01
 
 # (2) Configurate Xorg
 # (2-1) Install some necessary softwares
@@ -100,10 +99,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN wget https://github.com/novnc/noVNC/archive/v1.1.0.zip && \
   unzip -q v1.1.0.zip && \
   rm -rf v1.1.0.zip
-
-# (2-3) Copy xorg.conf
-# use existing one
-COPY xorg.conf /etc/X11/xorg.conf
 
 # (3) Run Xorg server + x11vnc + X applications
 # see run.sh for details

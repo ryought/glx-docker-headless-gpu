@@ -3,7 +3,9 @@
 # 0. generate xorg.conf if not copied
 # [ ! -e /etc/X11/xorg.conf ] && nvidia-xconfig -a --virtual=$SCREEN_RESOLUTION --allow-empty-initial-configuration --enable-all-gpus --busid $BUSID
 # nvidia-xconfig -a --virtual=800x600 --allow-empty-initial-configuration --enable-all-gpus --busid 0:4:0
-nvidia-xconfig -a --virtual=1280x720 --allow-empty-initial-configuration --enable-all-gpus --busid 0:4:0
+BUS_ID=$(nvidia-xconfig --query-gpu-info | grep 'PCI BusID' | sed -r 's/\s*PCI BusID : PCI:(.*)/\1/')
+echo $BUS_ID
+nvidia-xconfig -a --virtual=1280x720 --allow-empty-initial-configuration --enable-all-gpus --busid $BUS_ID
 
 # 1. launch X server
 Xorg :0 &

@@ -96,9 +96,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 # novnc
+# download websockify as well
 RUN wget https://github.com/novnc/noVNC/archive/v1.1.0.zip && \
   unzip -q v1.1.0.zip && \
-  rm -rf v1.1.0.zip
+  rm -rf v1.1.0.zip && \
+  git clone https://github.com/novnc/websockify /noVNC-1.1.0/utils/websockify
 
 # (3) Run Xorg server + x11vnc + X applications
 # see run.sh for details

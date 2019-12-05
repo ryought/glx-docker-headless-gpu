@@ -23,6 +23,8 @@ sleep 2
 /noVNC-1.1.0/utils/launch.sh --vnc localhost:5900 --listen 8081 &
 sleep 2
 
+echo 'running noVNC at http://localhost:8081/vnc.html?host=localhost&port=8081'
+
 # 3. start simulator
 export DISPLAY=:0
 # ./lg/simulator -screen-height 480 -screen-width 640 -screen-quality Beautiful -screen-fullscreen 0

@@ -9,15 +9,16 @@ sudo nvidia-xconfig -a --virtual=1280x720 --allow-empty-initial-configuration --
 
 # 1. launch X server
 sudo Xorg :0 &
-sleep 2  # wait for the server gets ready
+sleep 1  # wait for the server gets ready
 
 # 2. start x11 and vnc connection
 sudo x11vnc -display :0 -passwd pass -forever -rfbport 5900 --verbose &
 sleep 2  # wait for the server gets ready
 
 # 2.5 start audio
-sudo pulseaudio --start
-sleep 2
+# this is not required.
+# sudo pulseaudio --start
+# sleep 2
 
 # 3. start noVNC
 sudo /noVNC-1.1.0/utils/launch.sh --vnc localhost:5900 --listen 8081 &

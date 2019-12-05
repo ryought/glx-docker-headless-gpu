@@ -12,7 +12,7 @@ Xorg :0 &
 sleep 2  # wait for the server gets ready
 
 # 2. start x11 and vnc connection
-x11vnc -display :0 -passwd pass -forever -rfbport 5900 &
+x11vnc -display :0 -passwd pass -forever -rfbport 5900 --verbose &
 sleep 2  # wait for the server gets ready
 
 # 2.5 start audio

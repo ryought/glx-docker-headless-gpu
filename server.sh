@@ -1,4 +1,5 @@
 docker build -t sim .
+
 docker run --privileged -it --rm --gpus all \
   -v $HOME/lgsvlsimulator-linux64-2019.11:/lg \
   -v $HOME/container-unity3d:/root/.config/unity3d \

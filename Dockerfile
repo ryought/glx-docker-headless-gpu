@@ -1,6 +1,6 @@
 # FROM ubuntu:16.04
-FROM ubuntu:18.04
-
+# FROM ubuntu:18.04
+FROM autoware/autoware:1.13.0-melodic-cuda
 
 # Make all NVIDIA GPUS visible, but I want to manually install drivers
 ARG NVIDIA_VISIBLE_DEVICES=all
@@ -120,6 +120,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN apt-get update && apt-get install -y --no-install-recommends \
       alsa pulseaudio libgtk2.0-0 && \
     rm -rf /var/lib/apt/lists/*
+
+USER root
+WORKDIR /
 
 # novnc
 # download websockify as well

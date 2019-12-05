@@ -5,22 +5,22 @@
 # nvidia-xconfig -a --virtual=800x600 --allow-empty-initial-configuration --enable-all-gpus --busid 0:4:0
 BUS_ID=$(nvidia-xconfig --query-gpu-info | grep 'PCI BusID' | sed -r 's/\s*PCI BusID : PCI:(.*)/\1/')
 echo $BUS_ID
-nvidia-xconfig -a --virtual=1280x720 --allow-empty-initial-configuration --enable-all-gpus --busid $BUS_ID
+sudo nvidia-xconfig -a --virtual=1280x720 --allow-empty-initial-configuration --enable-all-gpus --busid $BUS_ID
 
 # 1. launch X server
-Xorg :0 &
+sudo Xorg :0 &
 sleep 2  # wait for the server gets ready
 
 # 2. start x11 and vnc connection
-x11vnc -display :0 -passwd pass -forever -rfbport 5900 --verbose &
+sudo x11vnc -display :0 -passwd pass -forever -rfbport 5900 --verbose &
 sleep 2  # wait for the server gets ready
 
 # 2.5 start audio
-pulseaudio --start
+sudo pulseaudio --start
 sleep 2
 
 # 3. start noVNC
-/noVNC-1.1.0/utils/launch.sh --vnc localhost:5900 --listen 8081 &
+sudo /noVNC-1.1.0/utils/launch.sh --vnc localhost:5900 --listen 8081 &
 sleep 2
 
 echo 'running noVNC at http://localhost:8081/vnc.html?host=localhost&port=8081'

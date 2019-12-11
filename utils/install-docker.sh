@@ -15,7 +15,12 @@ sudo apt-get install nvidia-container-runtime
 curl -fsSL get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 
+# add $USER to docker group
+# to run without docker 
+sudo gpasswd -a $USER docker
+
 # to test (with gpu)
 # docker run --gpus all nvidia/cuda nvidia-smi
 # or (without gpu)
 # docker run hello-world
+

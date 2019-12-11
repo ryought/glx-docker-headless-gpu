@@ -1,5 +1,6 @@
 #!/bin/bash
-docker build -t sim .
+docker build -t sim . && \
+# docker run --device=/dev/tty0:rw -it --rm --gpus all \
 docker run --privileged -it --rm --gpus all \
   -v $HOME/lgsvlsimulator-linux64-2019.11:/lg \
   -v $HOME/container-unity3d-2:/home/autoware/.config/unity3d:rw \

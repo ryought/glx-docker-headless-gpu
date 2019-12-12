@@ -2,12 +2,8 @@
 docker build -t sim . && \
 # docker run --device=/dev/tty0:rw -it --rm --gpus all \
 docker run --privileged -it --rm --gpus all \
-  -v $HOME/lgsvlsimulator-linux64-2019.11:/lg \
-  -v $HOME/container-unity3d-2:/home/autoware/.config/unity3d:rw \
   -p 8081:8081 \
-  -p 8082:8082 \
-  -e USER_ID=$(id -u) \
+  -e RESOLUTION=1280x720 \
+  -e VNCPASS=pass \
   --name sim sim
-
-# 8081: noVNC port
-# 8082: simulator
+  # -v $HOME/hoge:/hoge:ro \

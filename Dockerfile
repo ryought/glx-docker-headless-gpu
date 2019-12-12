@@ -1,6 +1,4 @@
-# FROM ubuntu:16.04
-# FROM ubuntu:18.04
-FROM autoware/autoware:1.13.0-melodic-cuda
+FROM ubuntu:18.04
 
 # Make all NVIDIA GPUS visible, but I want to manually install drivers
 ARG NVIDIA_VISIBLE_DEVICES=all
@@ -115,15 +113,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 # sound driver and GTK library
-# ALSA系のエラーがでる時は、pulseaudioをインストールして
-# X起動後にpulseaudio --start でdaemonを開始させる。
+# If you want to use sounds on docker, try `pulseaudio --start`
 RUN apt-get update && apt-get install -y --no-install-recommends \
       alsa pulseaudio libgtk2.0-0 && \
-      # alsa pulseaudio && \
     rm -rf /var/lib/apt/lists/*
-
-USER root
-WORKDIR /
 
 # novnc
 # download websockify as well
@@ -139,31 +132,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       dbus-x11 \
       libdbus-c++-1-0v5 && \
     rm -rf /var/lib/apt/lists/*
-
-# install nodejs and npm
-# https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04
-RUN curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh \
- && bash nodesource_setup.sh \
- && apt-get update \
- && apt-get install nodejs
-
-COPY control.js /simlauncher/
-COPY package.json /simlauncher/
-WORKDIR /simlauncher
-RUN npm install
-WORKDIR /
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-      xdotool && \
-    rm -rf /var/lib/apt/lists/*
-
-# setup python api
-WORKDIR /
-RUN git clone https://github.com/lgsvl/PythonAPI \
- && cd PythonAPI \
- && pip3 install --user -e .
-
-COPY test-api-move.py /api.py
 
 # (3) Run Xorg server + x11vnc + X applications
 # see run.sh for details

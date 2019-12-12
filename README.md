@@ -4,6 +4,18 @@ OpenGLやGLXなどを使ってグラフィック用途でGPUを使うアプリ�
 
 具体的には、Unityで作られたソフト本体の自動テスト環境やそれを使ったCI環境を、GPUインスタンスを含んだkubernetesクラスタ上に構築したい時に使える。
 
+
+## Update: support AWS and noVNC
+
+- AWSのg4インスタンスでの動作を確認しました。
+- noVNCを使用しブラウザからアクセスできるようにしました。
+
+実行するには:
+```
+bash server.sh
+```
+
+
 ## Background
 
 自動テストサーバーを作るために、 https://github.com/lgsvl/simulator をKubernetes上で動かしたかった。
